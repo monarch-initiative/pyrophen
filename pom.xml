@@ -14,7 +14,7 @@
     <name>hpo-fhir-terminology</name>
     <description>HPO FHIR terminology converter</description>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
         <spring-native.version>0.9.1</spring-native.version>
         <hapi.version>5.2.0</hapi.version>
     </properties>

@@ -7,7 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import picocli.CommandLine;
 
 
-
+/**
+ * Main entry point for the pyrophen application that takes as input the path to the hp.obo file
+ * and outputs the corresponding FHIR codesystem.
+ */
 @SpringBootApplication
 public class CliMain implements CommandLineRunner, ExitCodeGenerator {
     private final CommandLine.IFactory factory;
@@ -20,16 +23,7 @@ public class CliMain implements CommandLineRunner, ExitCodeGenerator {
     }
 
     @Override
-    public void run(String... args) throws Exception {
-//        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
-//        //String  obj = (DemoManager) context.getBean("demoService");
-//
-//        Ontology hpo = OntologyLoader.loadOntology(Paths.get(args[0]).toFile());
-//        OntologyFHIRCodeSystem ontologyFHIRCodeSystem = new OntologyFHIRCodeSystem("http://purl.obolibrary.org/obo/hp.fhir", hpo);
-//        CodeSystem codeSystem = ontologyFHIRCodeSystem.ontologyToCodeSystem(hpo);
-//        ontologyFHIRCodeSystem.writeCodeSystemXml(codeSystem, args[1]);
-//        System.out.println("Written file " + args[1]);
-        // let picocli parse command line args and run the business logic
+    public void run(String... args) {
         this.exitCode = new CommandLine(hpoFhirCommand, factory).execute(args);
     }
 

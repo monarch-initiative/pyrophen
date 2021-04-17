@@ -1,15 +1,17 @@
 package org.hpo.fhir.hpofhirterminology.fhir;
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.model.dstu2.composite.CodingDt;
+import ca.uhn.fhir.model.dstu2.resource.ValueSet;
 import ca.uhn.fhir.parser.IParser;
 import org.hl7.fhir.r4.model.*;
 import org.monarchinitiative.phenol.ontology.algo.OntologyAlgorithm;
 import org.monarchinitiative.phenol.ontology.data.Ontology;
 import org.monarchinitiative.phenol.ontology.data.Term;
 import org.monarchinitiative.phenol.ontology.data.TermId;
+import org.monarchinitiative.phenol.ontology.data.TermSynonym;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedWriter;
@@ -24,11 +26,23 @@ public class IFhirServiceImpl implements IFhirService{
 
     private static final Logger LOGGER= LoggerFactory.getLogger(IFhirServiceImpl.class);
 
+    private static final Coding SYNONYM = new Coding()
+            .setCode("900000000000013009")
+            .setDisplay("Synonym (core metadata concept)")
+            .setSystem("http://snomed.info/sct");
+
     public IFhirServiceImpl(String codeSystemUri) {
+
     }
 
+    /**
+     * Write the code system XML file.
+     * @param ontology The HPO ontology
+     * @param filename Path/name of output file
+     * @return 0 upon success, 1 otherwise
+     */
     @Override
-    public void writeCodeSystemXml(Ontology ontology, String filename) {
+    public int writeCodeSystemXml(Ontology ontology, String filename) {
         CodeSystem codeSystem = ontologyToCodeSystem(ontology);
         FhirContext ctx = FhirContext.forR4();
         IParser parser = ctx.newXmlParser();
@@ -39,8 +53,10 @@ public class IFhirServiceImpl implements IFhirService{
             bw.write(serialized);
         } catch (IOException e) {
             e.printStackTrace();
+            return 1;
         }
         LOGGER.info("Wrote FHIR HPO Code system");
+        return 0;
     }
 
     private CodeSystem ontologyToCodeSystem(Ontology ontology) {
@@ -56,13 +72,21 @@ public class IFhirServiceImpl implements IFhirService{
 
             CodeSystem.ConceptDefinitionComponent component = new CodeSystem.ConceptDefinitionComponent(hpoCodeType);
             component.setDefinition(term.getDefinition());
-            component.setId(tid.getValue());
-            component.setCode(term.getName());
+            component.setCode(tid.getValue());
+            component.setDisplay(term.getName());
             Set<TermId> parents = OntologyAlgorithm.getParentTerms(ontology, tid, false);
             for (TermId parent : parents) {
                 final CodeSystem.ConceptPropertyComponent parentProp = component.addProperty();
                 parentProp.setCode("parent");
                 parentProp.setValue(new CodeType(parent.getValue()));
+            }
+            List<TermSynonym> synonyms = term.getSynonyms();
+            for (TermSynonym tsyn : synonyms) {
+                CodeSystem.ConceptDefinitionDesignationComponent designationComponent =
+                        new CodeSystem.ConceptDefinitionDesignationComponent();
+                designationComponent.setUse(SYNONYM).setValue(tsyn.getValue());
+
+                component.addDesignation(designationComponent);
             }
             componentList.add(component);
         }
