@@ -44,6 +44,7 @@ public class IFhirServiceImpl implements IFhirService{
     @Override
     public int writeCodeSystemXml(Ontology ontology, String filename) {
         CodeSystem codeSystem = ontologyToCodeSystem(ontology);
+        setCodeSystemMetadata(codeSystem);
         FhirContext ctx = FhirContext.forR4();
         IParser parser = ctx.newXmlParser();
         // Indent the output
@@ -95,7 +96,7 @@ public class IFhirServiceImpl implements IFhirService{
         return codeSystem;
     }
 
-    private void setCodeSystemMetadata() {
+    private void setCodeSystemMetadata(CodeSystem codeSystem) {
 
         final String description = "A FHIR code system representation of the Human Phenotype Ontology.";
         final String version = "release/019293m3";
@@ -104,7 +105,6 @@ public class IFhirServiceImpl implements IFhirService{
         final String publisher = "The Human Phenotype Ontology";
         final String purpose = "To provide a standardized vocabulary of human phenotypes encountered in human disease in a FHIR context.";
         final String codeSystemUri = "http://purl.obolibrary.org/obo/hp.fhir";
-        CodeSystem codeSystem = new CodeSystem();
 
         codeSystem.setUrl(codeSystemUri);
         codeSystem.setId(name.toLowerCase());
