@@ -7,6 +7,10 @@ import org.monarchinitiative.phenol.ontology.algo.OntologyAlgorithm;
 import org.monarchinitiative.phenol.ontology.data.Ontology;
 import org.monarchinitiative.phenol.ontology.data.Term;
 import org.monarchinitiative.phenol.ontology.data.TermId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -15,24 +19,17 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.*;
 
-public class OntologyFHIRCodeSystem {
+@Service("FhirService")
+public class IFhirServiceImpl implements IFhirService{
 
-    private final CodeSystem codeSystem = new CodeSystem();
-    private final Ontology ontology;
+    private static final Logger LOGGER= LoggerFactory.getLogger(IFhirServiceImpl.class);
 
-    public OntologyFHIRCodeSystem(String codeSystemUri, Ontology ontology) {
-        final String description = "A FHIR code system representation of the Human Phenotype Ontology.";
-        final String version = "release/019293m3";
-        final String title = "Human Phenotype Ontology Coding";
-        final String name = "HPO";
-        final String publisher = "The Human Phenotype Ontology";
-        final String purpose = "To provide a standardized vocabulary of human phenotypes encountered in human disease in a FHIR context.";
-        setCodeSystemMetadata(codeSystemUri, description, version, title, name, publisher, purpose);
-        ontologyToCodeSystem(ontology);
-        this.ontology = Objects.requireNonNull(ontology);
+    public IFhirServiceImpl(String codeSystemUri) {
     }
 
-    public void writeCodeSystemXml(CodeSystem codeSystem, String filename) {
+    @Override
+    public void writeCodeSystemXml(Ontology ontology, String filename) {
+        CodeSystem codeSystem = ontologyToCodeSystem(ontology);
         FhirContext ctx = FhirContext.forR4();
         IParser parser = ctx.newXmlParser();
         // Indent the output
@@ -43,9 +40,10 @@ public class OntologyFHIRCodeSystem {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        LOGGER.info("Wrote FHIR HPO Code system");
     }
 
-    public CodeSystem ontologyToCodeSystem(Ontology ontology) {
+    private CodeSystem ontologyToCodeSystem(Ontology ontology) {
         Set<TermId> termIds = ontology.getNonObsoleteTermIds();
         List<CodeSystem.ConceptDefinitionComponent> componentList = new ArrayList<>();
         for (TermId tid : termIds) {
@@ -54,7 +52,8 @@ public class OntologyFHIRCodeSystem {
                 System.err.println("Could not find term for " + tid.getValue());
                 continue;
             }
-            CodeType hpoCodeType = new CodeType(tid.getValue());
+            CodeType hpoCodeType = new CodeType();
+
             CodeSystem.ConceptDefinitionComponent component = new CodeSystem.ConceptDefinitionComponent(hpoCodeType);
             component.setDefinition(term.getDefinition());
             component.setId(tid.getValue());
@@ -67,12 +66,22 @@ public class OntologyFHIRCodeSystem {
             }
             componentList.add(component);
         }
+        CodeSystem codeSystem = new CodeSystem();
         codeSystem.setConcept(componentList);
         return codeSystem;
     }
 
-    private void setCodeSystemMetadata(String codeSystemUri, String description, String version, String title,
-                                       String name, String publisher, String purpose) {
+    private void setCodeSystemMetadata() {
+
+        final String description = "A FHIR code system representation of the Human Phenotype Ontology.";
+        final String version = "release/019293m3";
+        final String title = "Human Phenotype Ontology Coding";
+        final String name = "HPO";
+        final String publisher = "The Human Phenotype Ontology";
+        final String purpose = "To provide a standardized vocabulary of human phenotypes encountered in human disease in a FHIR context.";
+        final String codeSystemUri = "http://purl.obolibrary.org/obo/hp.fhir";
+        CodeSystem codeSystem = new CodeSystem();
+
         codeSystem.setUrl(codeSystemUri);
         codeSystem.setId(name.toLowerCase());
         codeSystem.setVersion(version);

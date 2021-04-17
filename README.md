@@ -1,10 +1,11 @@
 # pyrophen
 Pyrophen generates a FHIR Code system representing the Human Phenotype Ontology
 
-# Read Me First
-The following was discovered as part of building this project:
-
-* The original package name 'org.hpo.fhir.hpo-fhir-terminology' is invalid and this project uses 'org.hpo.fhir.hpofhirterminology' instead.
+# Requirements
+To build the app as described below, 
+[maven](https://www.apache.org/>) and 
+[docker](https://docs.docker.com/) as well as Java (at least version 11) must
+be installed on your system.
 
 # Getting Started
 
