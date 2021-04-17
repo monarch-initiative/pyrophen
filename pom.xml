@@ -63,6 +63,7 @@
     </dependencies>
 
     <build>
+        <finalName>pyrophen</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

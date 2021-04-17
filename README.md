@@ -9,33 +9,39 @@ be installed on your system.
 
 # Getting Started
 
-### Reference Documentation
-For further reference, please consider the following sections:
+### Running the app
 
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.4.4/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.4.4/maven-plugin/reference/html/#build-image)
-* [Spring Native Reference Guide](https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/)
+To run the app directly from maven, enter the following
 
-### Additional Links
-These additional references should also help you:
-
-* [Configure the Spring AOT Plugin](https://docs.spring.io/spring-native/docs/0.9.1/reference/htmlsingle/#spring-aot-maven)
-
-## Spring Native
-
-This project has been configured to let you generate a lightweight container running a native executable.
-Docker should be installed and configured on your machine prior to creating the image, see [the Getting Started section of the reference guide](https://docs.spring.io/spring-native/docs/0.9.1/reference/htmlsingle/#getting-started-buildpacks).
-
-To create the image, run the following goal:
-
-```
-$ ./mvnw spring-boot:build-image
+```mermaid
+ ./mvnw spring-boot:run -Dspring-boot.run.arguments=--hpo=/your/path/hp.obo 
 ```
 
-Then, you can run the app like any other container:
+### Building the app
 
+To build a standalone app, enter
+```mermaid
+mvn package
 ```
-$ docker run --rm hpo-fhir-terminology:0.0.1-SNAPSHOT
-```
+This will build an executable file called ``pyrophen.jar`` in the ``target`` subdirectory.
+Use the following command to see if you build was successful
+```mermaid
+$ java -jar target/pyrophen.jar
+2021-04-17 12:55:50.287  INFO 31254 --- [           main] o.s.nativex.NativeListener               : This application is bootstrapped with code generated with Spring AOT
 
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v2.4.4)
+
+2021-04-17 12:55:50.386  INFO 31254 --- [           main] org.hpo.fhir.hpofhirterminology.CliMain  : Starting CliMain v0.0.1-SNAPSHOT using Java 14.0.1 on MLI-Robinson with PID 31254 (/Users/robinp/IdeaProjects/pyrophen/target/pyrophen.jar started by robinp in /Users/robinp/IdeaProjects/pyrophen)
+2021-04-17 12:55:50.387  INFO 31254 --- [           main] org.hpo.fhir.hpofhirterminology.CliMain  : No active profile set, falling back to default profiles: default
+2021-04-17 12:55:51.145  INFO 31254 --- [           main] org.hpo.fhir.hpofhirterminology.CliMain  : Started CliMain in 1.219 seconds (JVM running for 1.815)
+Missing required option: '--hpo=<pathToHpo>'
+Usage: fhir --hpo=<pathToHpo> [--out=<outfileName>]
+      --hpo=<pathToHpo>     path to HPO obo file
+      --out=<outfileName>   name/path of outfile
+```
