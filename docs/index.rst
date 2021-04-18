@@ -18,7 +18,7 @@ interested parties.
 
    introduction
    representation
-   exampl
+   example
    running
 
 
