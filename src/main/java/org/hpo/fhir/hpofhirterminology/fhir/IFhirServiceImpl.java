@@ -5,6 +5,7 @@ import ca.uhn.fhir.model.dstu2.composite.CodingDt;
 import ca.uhn.fhir.model.dstu2.resource.ValueSet;
 import ca.uhn.fhir.parser.IParser;
 import org.hl7.fhir.r4.model.*;
+import org.hpo.fhir.hpofhirterminology.except.HpoFhirRuntimeException;
 import org.monarchinitiative.phenol.ontology.algo.OntologyAlgorithm;
 import org.monarchinitiative.phenol.ontology.data.Ontology;
 import org.monarchinitiative.phenol.ontology.data.Term;
@@ -44,7 +45,7 @@ public class IFhirServiceImpl implements IFhirService{
     @Override
     public int writeCodeSystemXml(Ontology ontology, String filename) {
         CodeSystem codeSystem = ontologyToCodeSystem(ontology);
-        setCodeSystemMetadata(codeSystem);
+        setCodeSystemMetadata(codeSystem, ontology);
         FhirContext ctx = FhirContext.forR4();
         IParser parser = ctx.newXmlParser();
         // Indent the output
@@ -96,10 +97,13 @@ public class IFhirServiceImpl implements IFhirService{
         return codeSystem;
     }
 
-    private void setCodeSystemMetadata(CodeSystem codeSystem) {
-
+    private void setCodeSystemMetadata(CodeSystem codeSystem, Ontology ontology) {
+        final Map<String,String> hpoMetainfo = ontology.getMetaInfo();
+        if (! hpoMetainfo.containsKey("data-version")) {
+            throw new HpoFhirRuntimeException("Could not find data-version in HPO object");
+        }
         final String description = "A FHIR code system representation of the Human Phenotype Ontology.";
-        final String version = "release/019293m3";
+        final String version = hpoMetainfo.get("data-version");
         final String title = "Human Phenotype Ontology Coding";
         final String name = "HPO";
         final String publisher = "The Human Phenotype Ontology";
