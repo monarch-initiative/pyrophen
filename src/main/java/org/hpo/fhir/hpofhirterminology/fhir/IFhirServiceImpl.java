@@ -1,8 +1,6 @@
 package org.hpo.fhir.hpofhirterminology.fhir;
 
 import ca.uhn.fhir.context.FhirContext;
-import ca.uhn.fhir.model.dstu2.composite.CodingDt;
-import ca.uhn.fhir.model.dstu2.resource.ValueSet;
 import ca.uhn.fhir.parser.IParser;
 import org.hl7.fhir.r4.model.*;
 import org.hpo.fhir.hpofhirterminology.except.HpoFhirRuntimeException;
@@ -32,8 +30,7 @@ public class IFhirServiceImpl implements IFhirService{
             .setDisplay("Synonym (core metadata concept)")
             .setSystem("http://snomed.info/sct");
 
-    public IFhirServiceImpl(String codeSystemUri) {
-
+    public IFhirServiceImpl() {
     }
 
     /**
@@ -119,6 +116,7 @@ public class IFhirServiceImpl implements IFhirService{
         codeSystem.setExperimental(false);
         codeSystem.setDate(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)));
         codeSystem.setPublisher(publisher);
+        codeSystem.setCopyright("https://hpo.jax.org/app/license");
         final ContactDetail contact = new ContactDetail().setName("Peter N. Robinson");
         codeSystem.setContact(Collections.singletonList(contact));
         codeSystem.setDescription(description);

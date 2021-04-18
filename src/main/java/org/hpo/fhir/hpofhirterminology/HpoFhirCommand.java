@@ -22,10 +22,10 @@ public class HpoFhirCommand implements Callable<Integer> {
     @CommandLine.Option(names = "--out", description = "name/path of outfile", defaultValue = "hpo_fhir.xml")
     String outfileName;
 
-    public Integer call() throws Exception {
+    public Integer call() {
         Ontology hpo = OntologyLoader.loadOntology(new File(pathToHpo));
-        fhirService.writeCodeSystemXml(hpo, outfileName);
-        return 0;
+        int exitValue = fhirService.writeCodeSystemXml(hpo, outfileName);
+        return exitValue;
     }
 
 }

@@ -15,7 +15,7 @@ import picocli.CommandLine;
 public class CliMain implements CommandLineRunner, ExitCodeGenerator {
     private final CommandLine.IFactory factory;
     private int exitCode;
-    private HpoFhirCommand hpoFhirCommand;
+    private final HpoFhirCommand hpoFhirCommand;
 
     public CliMain(CommandLine.IFactory iFactory, HpoFhirCommand command) {
         this.factory = iFactory;
