@@ -1,8 +1,10 @@
-.. _rstexample:
+.. _rstexamplexml:
 
-#######
-Example
-#######
+#############
+Example (XML)
+#############
+
+pyrophen outputs the codeset in XML or JSON format. See :ref:`rstexamplejson` for JSON.
 
 The test class ``HpoFhirTerminologyApplicationTests`` writes a temporary file with the CodeSystem created for a small excerpt of the HPO located
 in ``src/test/resources/hp_head.obo``.

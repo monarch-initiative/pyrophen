@@ -24,6 +24,9 @@ public class CliMain implements CommandLineRunner, ExitCodeGenerator {
 
     @Override
     public void run(String... args) {
+        if (args.length == 0) {
+            args = new String[]{"-h"};
+        }
         this.exitCode = new CommandLine(hpoFhirCommand, factory).execute(args);
     }
 

@@ -40,9 +40,35 @@ public class IFhirServiceImpl implements IFhirService{
      * @return 0 upon success, 1 otherwise
      */
     @Override
-    public int writeCodeSystemXml(Ontology ontology, String filename) {
+    public int writeCodeSystem(Ontology ontology, String filename, String outputformat) {
         CodeSystem codeSystem = ontologyToCodeSystem(ontology);
         setCodeSystemMetadata(codeSystem, ontology);
+        if (outputformat.equalsIgnoreCase("XML")) {
+            return writeCodeSystemXML(codeSystem, filename);
+        } else if (outputformat.equalsIgnoreCase("JSON")) {
+            return writeCodeSystemJSON(codeSystem, filename);
+        } else {
+            throw new HpoFhirRuntimeException("Unrecognized output format: \"" + outputformat + "\"");
+        }
+    }
+
+
+    private int writeCodeSystemJSON(CodeSystem codeSystem, String filename) {
+        FhirContext ctx = FhirContext.forR4();
+        IParser parser = ctx.newJsonParser();
+        parser.setPrettyPrint(true);
+        String serialized = parser.encodeResourceToString(codeSystem);
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {
+            bw.write(serialized);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return 1;
+        }
+        return 0;
+    }
+
+
+    private int writeCodeSystemXML(CodeSystem codeSystem, String filename) {
         FhirContext ctx = FhirContext.forR4();
         IParser parser = ctx.newXmlParser();
         // Indent the output
@@ -57,6 +83,9 @@ public class IFhirServiceImpl implements IFhirService{
         LOGGER.info("Wrote FHIR HPO Code system");
         return 0;
     }
+
+
+
 
     private CodeSystem ontologyToCodeSystem(Ontology ontology) {
         Set<TermId> termIds = ontology.getNonObsoleteTermIds();

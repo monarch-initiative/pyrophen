@@ -29,11 +29,25 @@ class HpoFhirTerminologyApplicationTests {
 	}
 
 	@Test
-	public void OntologyFHIRCodeSystemTestCreateCodeSystem(@TempDir Path temp) throws IOException {
+	public void OntologyFHIRCodeSystemTestCreateCodeSystemXML(@TempDir Path temp) throws IOException {
 		Ontology ontology = OntologyLoader.loadOntology(Paths.get("src/test/resources/hp_head.obo").toFile());
 		File tempDirectory = temp.toFile();
 		String tempFilePath = tempDirectory.getAbsolutePath() + File.separator +  "temp.xml";
-		fhirService.writeCodeSystemXml(ontology, tempFilePath);
+		fhirService.writeCodeSystem(ontology, tempFilePath, "XML");
+		try (BufferedReader br = new BufferedReader(new FileReader(tempFilePath))) {
+			String line;
+			while ((line=br.readLine()) != null) {
+				System.out.println(line);
+			}
+		}
+	}
+
+	@Test
+	public void OntologyFHIRCodeSystemTestCreateCodeSystemJSON(@TempDir Path temp) throws IOException {
+		Ontology ontology = OntologyLoader.loadOntology(Paths.get("src/test/resources/hp_head.obo").toFile());
+		File tempDirectory = temp.toFile();
+		String tempFilePath = tempDirectory.getAbsolutePath() + File.separator +  "temp.json";
+		fhirService.writeCodeSystem(ontology, tempFilePath, "JSON");
 		try (BufferedReader br = new BufferedReader(new FileReader(tempFilePath))) {
 			String line;
 			while ((line=br.readLine()) != null) {

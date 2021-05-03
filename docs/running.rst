@@ -47,7 +47,9 @@ the code without arguments. You should see something like the following.
     2021-04-17 12:55:50.387  INFO 31254 --- [           main] org.hpo.fhir.hpofhirterminology.CliMain  : No active profile set, falling back to default profiles: default
     2021-04-17 12:55:51.145  INFO 31254 --- [           main] org.hpo.fhir.hpofhirterminology.CliMain  : Started CliMain in 1.219 seconds (JVM running for 1.815)
     Missing required option: '--hpo=<pathToHpo>'
-    Usage: fhir --hpo=<pathToHpo> [--out=<outfileName>]
+    Usage: fhir [--format=<outputFormat>] --hpo=<pathToHpo> [--out=<outfileName>]
+          --format=<outputFormat>
+                                format of output file (JSON (default), XML)
           --hpo=<pathToHpo>     path to HPO obo file
           --out=<outfileName>   name/path of outfile
 
