@@ -10,12 +10,12 @@
     </parent>
     <groupId>org.hpo.fhir</groupId>
     <artifactId>hpo-fhir-terminology</artifactId>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <name>hpo-fhir-terminology</name>
     <description>HPO FHIR terminology converter</description>
     <properties>
-        <java.version>11</java.version>
-        <spring-native.version>0.9.1</spring-native.version>
+        <java.version>17</java.version>
+        <spring-native.version>0.11.2</spring-native.version>
         <hapi.version>5.2.0</hapi.version>
     </properties>
     <dependencies>
@@ -41,7 +41,7 @@
         <dependency>
             <groupId>org.monarchinitiative.phenol</groupId>
             <artifactId>phenol-io</artifactId>
-            <version>1.6.2</version>
+            <version>1.6.3</version>
         </dependency>
         <!-- HAPI FHIR -->
         <dependency>
@@ -68,36 +68,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <!--<configuration>
-                    <image>
-                        <builder>paketobuildpacks/builder:tiny</builder>
-                        <env>
-                            <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
-                        </env>
-                    </image>
-                </configuration> -->
                 <configuration>
                     <mainClass>org.hpo.fhir.hpofhirterminology.CliMain</mainClass>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.experimental</groupId>
-                <artifactId>spring-aot-maven-plugin</artifactId>
-                <version>${spring-native.version}</version>
-                <executions>
-                    <execution>
-                        <id>test-generate</id>
-                        <goals>
-                            <goal>test-generate</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>generate</id>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
