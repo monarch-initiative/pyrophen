@@ -3,6 +3,8 @@ package org.hpo.fhir.hpofhirterminology.fhir;
 import ca.uhn.fhir.context.FhirContext;
 import ca.uhn.fhir.parser.IParser;
 import org.hl7.fhir.r4.model.*;
+import org.hl7.fhir.r4.model.CodeSystem.PropertyComponent;
+import org.hl7.fhir.r4.model.CodeSystem.PropertyType;
 import org.hpo.fhir.hpofhirterminology.except.HpoFhirRuntimeException;
 import org.monarchinitiative.phenol.ontology.algo.OntologyAlgorithm;
 import org.monarchinitiative.phenol.ontology.data.Ontology;
@@ -150,5 +152,13 @@ public class IFhirServiceImpl implements IFhirService{
         codeSystem.setContact(Collections.singletonList(contact));
         codeSystem.setDescription(description);
         codeSystem.setPurpose(purpose);
+        PropertyComponent parent  = codeSystem.addProperty();
+        parent.setCode("parent");
+        parent.setUri("http://hl7.org/fhir/concept-properties");
+        parent.setType(PropertyType.CODE);
+        parent.setDescription("The concept identified in this property is a parent of the concept on which it is a property. "
+            + "The property type will be 'code'. "
+            + "The meaning of 'parent' is defined by the hierarchyMeaning attribute. "
+            + "See: https://hl7.org/fhir/R4/codesystem-concept-properties.html");
     }
 }
