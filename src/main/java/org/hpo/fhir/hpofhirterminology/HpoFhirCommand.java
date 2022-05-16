@@ -19,7 +19,7 @@ public class HpoFhirCommand implements Callable<Integer> {
     @CommandLine.Option(names = "--hpo", description = "path to HPO obo file", required = true)
     String pathToHpo;
 
-    @CommandLine.Option(names = "--out", description = "name/path of outfile", defaultValue = "hpo_fhir.xml")
+    @CommandLine.Option(names = "--out", description = "name/path of outfile", defaultValue = "hpo_fhir.json")
     String outfileName;
 
     @CommandLine.Option(names ="--format", description = "format of output file (JSON (default), XML)", defaultValue = "json")
