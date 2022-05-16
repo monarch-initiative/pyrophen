@@ -41,14 +41,6 @@ The term is represented as follows in the FHIR XML.
       <display value="Decreased circulating IgG4 level"></display>
       <definition value="A reduction in immunoglobulin levels of the IgG4 subclass
                 in the blood circulation."></definition>
-      <designation>
-         <use>
-            <system value="http://snomed.info/sct"></system>
-            <code value="900000000000013009"></code>
-            <display value="Synonym (core metadata concept)"></display>
-         </use>
-         <value value="Decreased IgG4 level in blood"></value>
-      </designation>
       <property>
          <code value="parent"></code>
          <valueCode value="HP:0032135"></valueCode>

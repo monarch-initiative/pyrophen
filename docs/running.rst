@@ -49,24 +49,24 @@ the code without arguments. You should see something like the following.
     Missing required option: '--hpo=<pathToHpo>'
     Usage: fhir [--format=<outputFormat>] --hpo=<pathToHpo> [--out=<outfileName>]
           --format=<outputFormat>
-                                format of output file (JSON (default), XML)
-          --hpo=<pathToHpo>     path to HPO obo file
+                                format of output file (json [default], xml)
+          --hpo=<pathToHpo>     path to HPO json file
           --out=<outfileName>   name/path of outfile
 
 Running pyrophen
 ################
 
-To run pyrophen, you will need to have a copy of the ``hp.obo`` file. The latest version
+To run pyrophen, you will need to have a copy of the ``hp.json`` file. The latest version
 can be obtained from the
 `HPO GitHub repository <https://github.com/obophenotype/human-phenotype-ontology>`_.
 
 The ``pyrophen app gets the path to this file via the ``--hpo`` argument. Additionally, you can
-set the name/path of the output XML file via the ``--out`` argument (the default is ``hp_fhir.xml``).
+set the name/path of the output XML file via the ``--out`` argument (the default is ``hp_fhir.json``).
 
 
 .. code-block:: bash
 
-    java -jar pyrophen.jar --hpo /some/path/hp.obo [--out myxmlfile.xml]
+    java -jar pyrophen.jar --hpo /some/path/hp.json [--out myxmlfile.json]
 
 
 
