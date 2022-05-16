@@ -16,13 +16,13 @@ public class HpoFhirCommand implements Callable<Integer> {
     @Autowired
     private IFhirService fhirService;
 
-    @CommandLine.Option(names = "--hpo", description = "path to HPO obo file", required = true)
+    @CommandLine.Option(names = "--hpo", description = "path to HPO json file", required = true)
     String pathToHpo;
 
     @CommandLine.Option(names = "--out", description = "name/path of outfile", defaultValue = "hpo_fhir.json")
     String outfileName;
 
-    @CommandLine.Option(names ="--format", description = "format of output file (JSON (default), XML)", defaultValue = "json")
+    @CommandLine.Option(names ="--format", description = "format of output file (${DEFAULT-VALUE} [default], xml)", defaultValue = "json")
     String outputFormat;
 
     /**

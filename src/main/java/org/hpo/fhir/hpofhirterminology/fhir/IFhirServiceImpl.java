@@ -110,14 +110,14 @@ public class IFhirServiceImpl implements IFhirService{
                 parentProp.setCode("parent");
                 parentProp.setValue(new CodeType(parent.getValue()));
             }
-            List<TermSynonym> synonyms = term.getSynonyms();
+            /*List<TermSynonym> synonyms = term.getSynonyms();
             for (TermSynonym tsyn : synonyms) {
                 CodeSystem.ConceptDefinitionDesignationComponent designationComponent =
                         new CodeSystem.ConceptDefinitionDesignationComponent();
                 designationComponent.setUse(SYNONYM).setValue(tsyn.getValue());
 
                 component.addDesignation(designationComponent);
-            }
+            }*/
             componentList.add(component);
         }
         CodeSystem codeSystem = new CodeSystem();
