@@ -135,9 +135,10 @@ public class IFhirServiceImpl implements IFhirService{
         final String name = "HPO";
         final String publisher = "The Human Phenotype Ontology";
         final String purpose = "To provide a standardized vocabulary of human phenotypes encountered in human disease in a FHIR context.";
-        final String codeSystemUri = "http://purl.obolibrary.org/obo/hp.fhir";
+        final String codeSystemUri = "http://github.com/phenopackets/core-ig/CodeSystem/hpo";
 
         codeSystem.setUrl(codeSystemUri);
+        codeSystem.setContent(CodeSystem.CodeSystemContentMode.COMPLETE);
         codeSystem.setId(name.toLowerCase());
         codeSystem.setVersion(version);
         codeSystem.setName(name);
